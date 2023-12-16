@@ -1,0 +1,89 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: linear-gradient(rgb(68, 102, 120),rgb(167, 22, 82));
+    background-size: cover;
+    background-position: center;
+
+}
+.Separate{
+    background: purple;
+    width: 420px;
+    color: #fff;
+    border-radius: 10px;
+    padding: 30px 40px;
+}
+.Separate h1{
+    font-size: 36px;
+    text-align: center;
+}
+.Separate .input-box{
+    position: relative;
+    width: 90%;
+    height: 50px;
+    margin: 30px;
+}
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+}
+.input-box input::placeholder{
+    color: #fff;
+}
+.input-box i{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+.Separate .forgot{
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+    margin: -15px 0 15px;
+
+}
+.Separate .btn{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    text-decoration: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+.Separate .reg{
+    font-size: 15px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+.reg p a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+.reg p a:hover{
+
+    text-decoration: underline;
+}

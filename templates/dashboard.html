@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+    <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+    <style>
+        /* Add this style to handle new lines */
+        #markdown-output {
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <h2>Input Form</h2>
+    <form action="/dashboard" method="post">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required><br>
+
+        <label for="mode">Mode:</label>
+        <select id="mode" name="mode">
+            <option value="Topic">Topic</option>
+            <option value="Youtube">Youtube</option>
+        </select><br>
+
+        <label for="prompt">Prompt:</label><br>
+        <textarea id="prompt" name="prompt" rows="4" cols="50" required></textarea><br>
+
+        <input type="submit" value="Submit">
+
+    </form>
+    {% if result %}
+        
+        <md-block id  = "markdown-output">{{result}}</md-block>
+    {% endif %}
+
+</body>
+</html>
