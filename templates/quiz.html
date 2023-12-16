@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Form</title>
+</head>
+<body>
+    <form action="/evaluate" method="post">
+        {% for response in response_data.responses %}
+            <fieldset>
+                <legend>{{ response.question }}</legend>
+                {% for option in response.options %}
+                    <label>
+                        <input type="radio" name="{{ response.question }}" value="{{ option }}" required>
+                        {{ option }}
+                    </label><br>
+                {% endfor %}
+            </fieldset>
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

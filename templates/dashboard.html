@@ -1,39 +1,77 @@
+<!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Page</title>
+    <title>Dashboard</title>
     <script type="module" src="https://md-block.verou.me/md-block.js"></script>
-    <style>
-        /* Add this style to handle new lines */
-        #markdown-output {
-            white-space: pre-line;
-        }
-    </style>
+    
 </head>
 <body>
-    <h2>Input Form</h2>
-    <form action="/dashboard" method="post">
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required><br>
+    <h2>Dashboard</h2>
+    
+        <form action="/dashboard" id = "inputForm" method="post">
+            <label for = "subject">Subject</label>
+            <input type = "text" id = "subject" name = "subject" required>
+            <label for="mode">Select Mode:</label>
+            <select id="mode" name="mode" onchange="changeInputType()">
+                <option value="topic" selected>Topic</option>
+                <option value="youtube">YouTube</option>
+            </select><br>
 
-        <label for="mode">Mode:</label>
-        <select id="mode" name="mode">
-            <option value="Topic">Topic</option>
-            <option value="Youtube">Youtube</option>
-        </select><br>
+            <div id="inputContainer">
+                <!-- The next input element will be added here dynamically -->
+            </div>
 
-        <label for="prompt">Prompt:</label><br>
-        <textarea id="prompt" name="prompt" rows="4" cols="50" required></textarea><br>
+            <input type="submit" value="Submit">
+            
 
-        <input type="submit" value="Submit">
-
-    </form>
-    {% if result %}
         
-        <md-block id  = "markdown-output">{{result}}</md-block>
-    {% endif %}
+        </form>
+        {% if result %}
+            
+            <md-block id  = "markdown-output">{{result}}</md-block>
+            <form action = '/generate_quiz' id = 'generate_quiz' method="post">
+            <button type="submit" name="quiz" value="generate_quiz">Generate Quiz</button></form>
+            {% if narration %}
+            <audio controls>
+                <source src="{{ url_for('static', filename='narration.mp3') }}" type="audio/mpeg">
+            </audio>
 
-</body>
-</html>
+            {% endif %}
+            {% if image_prompt %}
+                <img src="{{ url_for('static', filename='image.jpg') }}">
+            {% endif %}
+        {% endif %}
+
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+        // Set the default value based on the initial selection
+                changeInputType();
+            });
+            function changeInputType() {
+                var selectedMode = document.getElementById("mode").value;
+                var inputContainer = document.getElementById("inputContainer");
+                inputContainer.innerHTML = "";
+
+                var label = document.createElement("label");
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "value";
+
+                if (selectedMode === "topic") {
+                    label.textContent = "Topic:";
+                    input.placeholder = "Enter topic";
+                } else if (selectedMode === "youtube") {
+                    label.textContent = "YouTube URL:";
+                    input.placeholder = "Enter YouTube URL";
+                }
+
+                inputContainer.appendChild(label);
+                inputContainer.appendChild(input);
+            }
+        </script>
+    </body>
+    </html>
