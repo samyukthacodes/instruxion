@@ -5,6 +5,7 @@ from wtforms import SelectField
 import prompting as pr
 import ytvideos as yt
 import gtts  
+import json
 
 load_dotenv()
 
@@ -26,6 +27,10 @@ def signin():
             if response.count > 0 and response.items[0]["password"] == password:
             # Redirect to the add_numbers page after successful login
                 session['username'] = username
+                user = db.fetch({"username?contains": username}).items[0]
+                session['qualification'] = user['qualification']
+                session['learnertype'] = user['learnertype']
+
                 return redirect(url_for('dashboard'))
 
 
@@ -38,13 +43,19 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']
+        dateofbirth =  request.form['date']
+        qualification = request.form['qualification']
+        learnertype = request.form['learnertype']
 
         # Check if username already exists (mock validation)
         if checkUserExist(username).count > 0:
             return 'Username already taken. Please choose another one.'
-        
-        user = insert_user(username, password)
-
+        try:
+            user = insert_user(username, password, email, dateofbirth, qualification, learnertype)
+        except Exception as e:
+            
+            print(f"Error: {str(e)}") 
         return f'Account created for {username}. You can now login.'
 
     return render_template('signup.html')
@@ -64,9 +75,8 @@ def dashboard():
             subject = request.form.get('subject')
             value = request.form.get('value')
             print(mode)
-            if mode == 'topic':
-                result = "hello"
-                #result = pr.responseOnTopic(value, subject)
+            if mode == 'topic': 
+                result = pr.responseOnTopic(value, subject)
             if mode == 'youtube':
                 video_id = yt.getVideoID(value)
                 print(video_id)
@@ -74,9 +84,10 @@ def dashboard():
                 transcript = yt.get_transcript(video_id)
                 result = pr.responseOnVideo(transcript, subject)
                 value = transcript
-            learner = "visual"
-
-            if learner == "auditary":
+            learner = session['learnertype']
+            print("learner: ", learner)
+            """
+            if learner == "auditory":
                 narration = pr.generate_narration(value, result, subject)
                 
                 t1 = gtts.gTTS(narration)
@@ -87,7 +98,7 @@ def dashboard():
                 dest_file.close()
             if learner == "visual":
                 image_prompt = pr.generatePrompt(value, subject=subject)
-                pr.generateImage(image_prompt)
+                pr.generateImage(image_prompt)"""
 
             
 
@@ -110,30 +121,11 @@ def generate_quiz():
 def quiz(response):
     # Your code for the quiz.html page goes here
     # ...
-    content = pr.quizGenerator(response)
+    content = json.loads(pr.quizGenerator(response))
+
     print(content)
-    return render_template('quiz.html', response = content)
+    return render_template('quiz.html', content = content)
 
-@app.route('/evaluate', methods=['POST'])
-def evaluate():
-    submitted_answers = request.form.to_dict()
-
-    # Evaluate the submitted answers
-    score = evaluate_answers(submitted_answers)
-
-    return render_template('quiz_result.html', score=score)
-
-# Helper function to evaluate answers
-def evaluate_answers(submitted_answers):
-    correct_answers = {response["question"]: response["answer"] for response in response_data["responses"]}
-    score = 0
-
-    for question, submitted_answer in submitted_answers.items():
-        if question in correct_answers and submitted_answer == correct_answers[question]:
-            score += 1
-
-    return score
-    
 
 
 if __name__ == '__main__':

@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Form</title>
+    <title>Quiz Questions</title>
 </head>
 <body>
-    <form action="/evaluate" method="post">
-        {% for response in response_data.responses %}
-            <fieldset>
-                <legend>{{ response.question }}</legend>
-                {% for option in response.options %}
-                    <label>
-                        <input type="radio" name="{{ response.question }}" value="{{ option }}" required>
-                        {{ option }}
-                    </label><br>
-                {% endfor %}
-            </fieldset>
-        {% endfor %}
-        <input type="submit" value="Submit">
-    </form>
+    <h1>Quiz Questions</h1>
+    {% for response in content.responses %}
+        <div class="question">
+            <p>{{ response.question }}</p>
+            <ul>
+                <li>{{ response.option1 }}</li>
+                <li>{{ response.option2 }}</li>
+                <li>{{ response.option3 }}</li>
+                <li>{{ response.option4 }}</li>
+            </ul>
+            <p>Correct Answer: {{ response.answer }}</p>
+        </div>
+    {% endfor %}
 </body>
 </html>
