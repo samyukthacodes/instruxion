@@ -86,7 +86,7 @@ def dashboard():
                 value = transcript
             learner = session['learnertype']
             print("learner: ", learner)
-            """
+
             if learner == "auditory":
                 narration = pr.generate_narration(value, result, subject)
                 
@@ -98,7 +98,7 @@ def dashboard():
                 dest_file.close()
             if learner == "visual":
                 image_prompt = pr.generatePrompt(value, subject=subject)
-                pr.generateImage(image_prompt)"""
+                pr.generateImage(image_prompt)
 
             
 
